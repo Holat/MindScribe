@@ -5,17 +5,53 @@ import { FaPhone } from "react-icons/fa";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 import { FiMail } from "react-icons/fi";
 import { useNavigate, Link } from "react-router-dom";
+import { IoWarning } from "react-icons/io5";
 
 export default function SignUp() {
   //form params.
   const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState({ name: "", type: "email" });
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   //navigate.
   const navigate = useNavigate();
+
+  //error handling.
+  // const [fullNameError, setFullNameErrors] = useState("");
+  // const [emailError, setEmailError] = useState("");
+  // const [phoneError, setPhoneError] = useState("");
+  // const [passwordError, setPasswordError] = useState("");
+  // const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [errors, setErrors] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [emailValidity, setEmailValidity] = useState("");
+
+  function handleError() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailValid = emailRegex.test(email.name);
+
+    if (
+      fullName === "" ||
+      email.name === "" ||
+      !isEmailValid ||
+      phone === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      setErrors("This field cannot be empty.");
+      setEmailValidity("Invalid email address");
+    } else if (password !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setErrors("");
+      setConfirmPasswordError("");
+      // setEmailValidity("");
+    }
+
+    console.log(fullName, email.name, phone, password);
+  }
 
   return (
     <div className="text-center flex flex-col">
@@ -34,7 +70,7 @@ export default function SignUp() {
         </div>
       </div>
       <div>
-        <form className="flex flex-col mt-7 gap-6">
+        <div className="flex flex-col mt-7 gap-6">
           <div>
             <input
               type="text"
@@ -46,17 +82,35 @@ export default function SignUp() {
             <div className="-mt-8 mb-4 ml-12 lg:ml-[34em]">
               <FaUser size={14} />
             </div>
+            <div className="float-end mr-10 relative -mt-[30px]">
+              {fullName ? (
+                ""
+              ) : (
+                <span className="text-red-500">
+                  {errors ? <IoWarning /> : ""}
+                </span>
+              )}
+            </div>
           </div>
           <div>
             <input
               type="email"
               placeholder="Email"
               className="font-serif border border-white rounded-full p-2 w-80 placeholder:text-black placeholder:opacity-40 placeholder:font-sans px-14 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 focus:font-bold text-[15px]"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={email.name}
+              onChange={(e) => setEmail({ ...email, name: e.target.value })}
             />
             <div className="-mt-8 mb-4 ml-12 lg:ml-[34em]">
               <FiMail size={14} />
+            </div>
+            <div className="float-end mr-10 relative -mt-[30px]">
+              {email.name && !errors ? (
+                ""
+              ) : (
+                <span className="text-red-500">
+                  {errors && emailValidity ? <IoWarning /> : ""}
+                </span>
+              )}
             </div>
           </div>
           <div>
@@ -70,6 +124,15 @@ export default function SignUp() {
             <div className="-mt-8 mb-4 ml-12 lg:ml-[34em]">
               <FaPhone size={14} />
             </div>
+            <div className="float-end mr-10 relative -mt-[30px]">
+              {phone ? (
+                ""
+              ) : (
+                <span className="text-red-500">
+                  {errors ? <IoWarning /> : ""}
+                </span>
+              )}
+            </div>
           </div>
           <div>
             <input
@@ -81,6 +144,15 @@ export default function SignUp() {
             />
             <div className="-mt-8 mb-4 ml-12 lg:ml-[34em]">
               <GiPadlock size={14} />
+            </div>
+            <div className="float-end mr-10 relative -mt-[30px]">
+              {password ? (
+                ""
+              ) : (
+                <span className="text-red-500">
+                  {errors ? <IoWarning /> : ""}
+                </span>
+              )}
             </div>
           </div>
           <div>
@@ -94,13 +166,23 @@ export default function SignUp() {
             <div className="-mt-8 mb-4 ml-12 lg:ml-[34em]">
               <GiPadlockOpen size={14} />
             </div>
+            <div className="float-end mr-10 relative -mt-[30px]">
+              {confirmPassword && !confirmPasswordError ? (
+                ""
+              ) : (
+                <span className="text-red-500">
+                  {errors || confirmPasswordError ? <IoWarning /> : ""}
+                  {/* {confirmPasswordError ? confirmPasswordError : ""} */}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="mt-2">
+          <div onClick={handleError} className="mt-2">
             <button className="cursor-pointer hover:opacity-70 duration-300 border border-transparent bg-blue-700 text-white p-3 rounded-full px-14 shadow-2xl font-sans tracking-widest">
               SIGN UP
             </button>
           </div>
-        </form>
+        </div>
         <div className="mt-7">
           <div className="">
             Already have an account?{" "}
