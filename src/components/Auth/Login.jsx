@@ -3,10 +3,24 @@ import { FiMail } from "react-icons/fi";
 import { GiPadlock } from "react-icons/gi";
 import headerLogo from "../../assets/bulgatti.png";
 import { Link } from "react-router-dom";
+import { IoWarning } from "react-icons/io5";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  //error handling.
+  const [error, setError] = useState("");
+
+  function handleError() {
+    if (email === "" || password === "") {
+      setError("This field cannot be empty");
+    } else {
+      setError("");
+    }
+
+    console.log(email, password);
+  }
 
   return (
     <div className="text-center">
@@ -20,7 +34,7 @@ export default function Login() {
           account.
         </div>
       </div>
-      <form className="flex flex-col mt-12 gap-6">
+      <div className="flex flex-col mt-12 gap-6">
         <div>
           <input
             type="email"
@@ -31,6 +45,9 @@ export default function Login() {
           />
           <div className="-mt-8 mb-4 ml-12 lg:ml-[34em]">
             <FiMail size={14} />
+          </div>
+          <div className="float-end mr-10 relative -mt-[30px] text-red-500">
+            {email ? "" : <span>{error ? <IoWarning /> : ""}</span>}
           </div>
         </div>
         <div>
@@ -44,11 +61,14 @@ export default function Login() {
           <div className="-mt-8 mb-4 ml-12 lg:ml-[34em]">
             <GiPadlock size={14} />
           </div>
+          <div className="float-end mr-10 relative -mt-[30px] text-red-500">
+            {password ? "" : <span>{error ? <IoWarning /> : ""}</span>}
+          </div>
         </div>
         <div className="text-end mr-6 -mt-3 opacity-50 cursor-pointer">
           Forgot Password?
         </div>
-        <div className="mt-6">
+        <div onClick={handleError} className="mt-6">
           <button className="cursor-pointer hover:opacity-70 duration-300 border border-transparent bg-blue-700 text-white p-3 rounded-full px-14 shadow-2xl font-sans tracking-widest">
             LOG IN
           </button>
@@ -61,7 +81,7 @@ export default function Login() {
             </Link>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
