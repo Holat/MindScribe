@@ -6,6 +6,7 @@ import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 import { FiMail } from "react-icons/fi";
 import { useNavigate, Link } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
+import { supabase } from "../../utils/supabaseClient";
 
 export default function SignUp() {
   //form params.
@@ -14,6 +15,7 @@ export default function SignUp() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [ loading, setLoading] =  useState(false);
 
   //navigate.
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export default function SignUp() {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [emailValidity, setEmailValidity] = useState("");
 
-  function handleError() {
+   async function handleSubmit() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmailValid = emailRegex.test(email.name);
 
@@ -50,7 +52,25 @@ export default function SignUp() {
       // setEmailValidity("");
     }
 
-    console.log(fullName, email.name, phone, password);
+
+      setLoading(true)
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            fullName,
+            phone
+          },
+        },
+      })
+
+      if  (error){
+        console.log(error)
+      }else{
+        console.log(data);
+        navigate("/")
+      }
   }
 
   return (
@@ -177,9 +197,11 @@ export default function SignUp() {
               )}
             </div>
           </div>
-          <div onClick={handleError} className="mt-2">
-            <button className="cursor-pointer hover:opacity-70 duration-300 border border-transparent bg-blue-700 text-white p-3 rounded-full px-14 shadow-2xl font-sans tracking-widest">
-              SIGN UP
+          <div  className="">
+            <button disabled={loading} onClick={handleSubmit} className="cursor-pointer hover:opacity-70 duration-300 border border-transparent bg-blue-700 text-white p-3 rounded-full px-14 shadow-2xl font-sans tracking-widest mt-2">
+              {
+                loading ? "loading" : "Sign Up"
+              }
             </button>
           </div>
         </div>
