@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FiMail } from "react-icons/fi";
 import { GiPadlock } from "react-icons/gi";
 import headerLogo from "../../assets/bulgatti.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
 import { supabase } from "../../utils/supabaseClient";
 import AnimatedLoader from "../../assets/loading.svg";
@@ -11,6 +11,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   //error handling.
   const [error, setError] = useState("");
@@ -31,7 +33,7 @@ export default function Login() {
 
       if (error) throw error;
 
-      // navigate("/home")
+      navigate("/home");
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -54,13 +56,13 @@ export default function Login() {
       </div>
       <div className="flex flex-col mt-12 gap-6 items-center">
         <div className="relative w-80">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <FiMail size={16} className="text-gray-500" />
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 mb-0.5">
+            <FiMail size={14} className="" />
           </div>
           <input
             type="email"
             placeholder="Email"
-            className="font-serif border border-white rounded-full p-2 w-full placeholder:text-black placeholder:opacity-40 placeholder:font-sans pl-10 pr-10 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 focus:font-bold text-[15px]"
+            className="font-serif border border-white rounded-full p-2 w-full placeholder:text-black placeholder:opacity-40 placeholder:font-sans pl-10 pr-10 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 text-[15px]"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -73,12 +75,12 @@ export default function Login() {
 
         <div className="relative w-80 mt-4">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <GiPadlock size={16} className="text-gray-500" />
+            <GiPadlock size={14} className="" />
           </div>
           <input
             type="password"
             placeholder="Password"
-            className="font-serif border border-white rounded-full p-2 w-full placeholder:text-black placeholder:opacity-40 placeholder:font-sans pl-10 pr-10 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 focus:font-bold text-[15px]"
+            className="font-serif border border-white rounded-full p-2 w-full placeholder:text-black placeholder:opacity-40 placeholder:font-sans pl-10 pr-10 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 text-[15px]"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -109,7 +111,7 @@ export default function Login() {
           <div className="">
             {"Don't have an account?"}
             <Link to="/signup">
-              <strong className="text-blue-700 cursor-pointer">Sign Up</strong>
+              <strong className="text-blue-700 cursor-pointer"> Sign Up</strong>
             </Link>
           </div>
         </div>
