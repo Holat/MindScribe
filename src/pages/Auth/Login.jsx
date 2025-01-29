@@ -2,44 +2,23 @@ import { useState } from "react";
 import { FiMail } from "react-icons/fi";
 import { GiPadlock } from "react-icons/gi";
 import headerLogo from "../../assets/bulgatti.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
-import { supabase } from "../../utils/supabaseClient";
 import AnimatedLoader from "../../assets/loading.svg";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Login() {
+  const { signIn, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   //error handling.
   const [error, setError] = useState("");
 
   async function handleSubmit() {
-    if (email === "" || password === "") {
-      setError("This field cannot be empty");
-    } else {
-      setError("");
-    }
-
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      navigate("/home");
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    if (email === "" || password === "") setError("This field cannot be empty");
+    else setError("");
+    await signIn(email, password);
   }
 
   return (

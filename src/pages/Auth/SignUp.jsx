@@ -6,18 +6,18 @@ import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 import { FiMail } from "react-icons/fi";
 import { useNavigate, Link } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
-import { supabase } from "../../utils/supabaseClient";
 import AnimatedLoader from "../../assets/loading.svg";
 import headerLogo from "../../assets/bulgatti.png";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function SignUp() {
+  const { signUp, loading } = useAuth();
   //form params.
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
   //navigate.
   const navigate = useNavigate();
@@ -53,37 +53,7 @@ export default function SignUp() {
       setConfirmPasswordError("");
       // setEmailValidity("");
     }
-
-    try {
-      setLoading(true);
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            fullName,
-            phone,
-          },
-        },
-      });
-
-      if (error) {
-        // Throwing the error so it can be caught and handled
-        throw error;
-      }
-
-      console.log("Sign-up successful:", data);
-      navigate("/"); // Navigate to the next page on success
-    } catch (err) {
-      // Handle the error
-      console.error("An error occurred during sign-up:", err.message || err);
-      setErrors(
-        err.message || "An unexpected error occurred. Please try again."
-      );
-    } finally {
-      setLoading(false); // Ensure loading is turned off after the operation
-    }
+    await signUp({ fullName, password, phone, email });
   }
 
   return (

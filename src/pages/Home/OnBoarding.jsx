@@ -1,15 +1,18 @@
 import HomeIcons from "./HomeIcons";
 import headerLogo from "../../assets/bulgatti.png";
 import { FaPlus } from "react-icons/fa";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function OnBoarding() {
+  const { user } = useAuth();
+
   return (
     <div className="">
       <div className="flex flex-row justify-between items-center py-4 px-4 mb-4">
         <div className="">
           <img src={headerLogo} alt="" className="w-30" />
         </div>
-        <div>Hello, User</div>
+        <div>Hello, {`${user?.fullName.split(" ")[0] || "User"}`}</div>
       </div>
       <div className="px-4 flex flex-col gap-8 pb-24">
         <div className="flex flex-col gap-6 px-4 border border-white hover:border-blue-700 duration-300 hover:duration-300 bg-white rounded-md p-4 cursor-pointer shadow-sm">
