@@ -1,26 +1,24 @@
 import { useState } from "react";
-import { BiArrowBack } from "react-icons/bi";
 import { FaUser } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 import { FiMail } from "react-icons/fi";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
 import AnimatedLoader from "../../assets/loading.svg";
 import headerLogo from "../../assets/bulgatti.png";
 import { useAuth } from "../../../context/AuthContext";
+import BackArrow from "../../components/BackArrow";
 
 export default function SignUp() {
   const { signUp, loading } = useAuth();
+
   //form params.
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  //navigate.
-  const navigate = useNavigate();
 
   //error handling.
   // const [fullNameError, setFullNameErrors] = useState("");
@@ -52,18 +50,15 @@ export default function SignUp() {
       setErrors("");
       setConfirmPasswordError("");
       // setEmailValidity("");
+      await signUp({ fullName, password, phone, email });
     }
-    await signUp({ fullName, password, phone, email });
   }
 
   return (
     <div className="text-center flex flex-col">
       <div className="flex items-center gap-3">
-        <div
-          onClick={() => navigate(-1)}
-          className="text-start ml-5 py-6 cursor-pointer"
-        >
-          <BiArrowBack size={17} />
+        <div>
+          <BackArrow />
         </div>
         <div>
           <img src={headerLogo} alt="" className="w-20 mb-2" />

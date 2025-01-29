@@ -1,18 +1,13 @@
-import HomeIcons from "./HomeIcons";
-import headerLogo from "../../assets/bulgatti.png";
+import HomeHeader from "../../components/HomeHeader";
+import HomeIcons from "../../components/HomeIcons";
 import { FaPlus } from "react-icons/fa";
-import { useAuth } from "../../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function OnBoarding() {
-  const { user } = useAuth();
-
   return (
     <div className="">
-      <div className="flex flex-row justify-between items-center py-4 px-4 mb-4">
-        <div className="">
-          <img src={headerLogo} alt="" className="w-30" />
-        </div>
-        <div>Hello, {`${user?.fullName.split(" ")[0] || "User"}`}</div>
+      <div>
+        <HomeHeader />
       </div>
       <div className="px-4 flex flex-col gap-8 pb-24">
         <div className="flex flex-col gap-6 px-4 border border-white hover:border-blue-700 duration-300 hover:duration-300 bg-white rounded-md p-4 cursor-pointer shadow-sm">
@@ -35,12 +30,14 @@ export default function OnBoarding() {
       </div>
 
       {/* create new post button */}
-      <div className="border border-transparent p-6 rounded-full bg-blue-700 text-white cursor-pointer right-0 top-[550px] mr-3 fixed hover:opacity-70 duration-300">
-        <FaPlus className="" />
-      </div>
+      <Link to="/create-note">
+        <div className="border border-transparent p-6 rounded-full bg-blue-700 text-white cursor-pointer right-0 top-[550px] mr-3 fixed hover:opacity-70 duration-300">
+          <FaPlus className="" />
+        </div>
+      </Link>
 
       {/* home icons */}
-      <div className="fixed bottom-0 py-5 w-full mt-10 border border-slate-100 bg-slate-100 p-4 border-t-gray-400 shadow-[0_-4px_8px_rgba(0,0,0,0.1)] z-50">
+      <div>
         <HomeIcons />
       </div>
     </div>

@@ -6,9 +6,9 @@ import { CiSettings } from "react-icons/ci";
 
 export default function HomeIcons() {
   return (
-    <div className="">
+    <div className="fixed bottom-0 py-5 w-full mt-10 border border-slate-100 bg-slate-100 p-4 border-t-gray-400 shadow-[0_-4px_8px_rgba(0,0,0,0.1)] z-50">
       <div className="flex flex-row justify-between px-4 items-center">
-        <div className="">
+        <div>
           <BiHome size={22} className="cursor-pointer" />
         </div>
         <div>
