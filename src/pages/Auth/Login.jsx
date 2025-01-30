@@ -52,7 +52,7 @@ export default function Login() {
           )}
         </div>
 
-        <div className="relative w-80 mt-4">
+        <div className="relative w-80">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3">
             <GiPadlock size={14} className="" />
           </div>

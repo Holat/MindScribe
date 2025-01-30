@@ -27,7 +27,7 @@ function App() {
               <Route path="/search" element={<SearchInput />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/archive" element={<Archive />} />
-              <Route path="/read-more" element={<ReadMore />} />
+              <Route path="/read-more/:id" element={<ReadMore />} />
               <Route path="/archive-read-more" element={<ArchiveReadMore />} />
               <Route path="/tags" element={<Tags />} />
             </Routes>

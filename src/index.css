@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@layer components {
+  .custom-quill .ql-container {
+    @apply min-h-[200px];
+  }
+  .custom-quill .ql-editor {
+    @apply min-h-[180px];
+  }
+}

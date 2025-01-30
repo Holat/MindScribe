@@ -1,40 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BackArrow from "../../components/BackArrow";
 import headerLogo from "../../assets/bulgatti.png";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import AnimatedLoader from "../../assets/loading.svg";
 import toast from "react-hot-toast";
+import { createNote, fetchTags } from "../../utils/api";
+import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 
 export default function CreateNote() {
   //note params.
+  const { user } = useAuth();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
-  const [tag, setTag] = useState("");
+  const [options, setOptions] = useState([]);
+  const [tag, setTag] = useState([]);
 
   //error handling.
   const [errors, setErros] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function handleSubmit() {
-    setLoading(true);
+  const navigate = useNavigate();
 
-    if (body === "") {
-      toast.error("Body cannot be empty");
-      setLoading(false);
-    } else if (title === "") {
-      toast.error("Title cannot be empty");
-      setLoading(false);
-    } else if (tag === "") {
-      toast.error("Tag cannot be empty");
-      setLoading(false);
-    } else {
+  const handleTagChange = (selectedOptions) => {
+    setTag(
+      selectedOptions ? selectedOptions.map((option) => option.value) : []
+    );
+  };
+
+  async function handleSubmit() {
+    setLoading(true);
+    if (body === "") toast.error("Body cannot be empty");
+    else if (title === "") toast.error("Title cannot be empty");
+    else if (tag === "") toast.error("Tag cannot be empty");
+    else {
       setErros("");
-      setLoading(false);
-      toast.success("Note Created Successfully");
-      console.log(body, title, tag);
+
+      await createNote({ user_id: user?.id, body, title, tags: tag });
+      navigate("/home");
     }
+    setLoading(false);
   }
+
+  const fetch = async () => {
+    const data = await fetchTags();
+    const mapOp = data.map((tag) => ({ value: tag.name, label: tag.name }));
+    setOptions(mapOp);
+  };
+
+  useEffect(() => {
+    fetch();
+  }, []);
 
   return (
     <div>
@@ -67,16 +84,18 @@ export default function CreateNote() {
 
         {/* Tag Input */}
         <div className="flex flex-col gap-2">
-          <input
-            type="text"
-            placeholder="Tag"
-            className={
-              errors
-                ? "flex-1 font-serif placeholder:text-black placeholder:opacity-40 placeholder:font-sans bg-white border border-red-500 rounded-lg outline-none text-[15px] p-2 focus-within:border-blue-700 focus-within:border-2"
-                : "flex-1 font-serif placeholder:text-black placeholder:opacity-40 placeholder:font-sans bg-white border border-white rounded-lg outline-none text-[15px] p-2 focus-within:border-blue-700 focus-within:border-2"
-            }
-            value={tag}
-            onChange={(e) => setTag(e.target.value)}
+          <Select
+            options={options}
+            isMulti
+            value={options.filter((stag) => tag.includes(stag.value))}
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                borderColor: state.isFocused ? "#1447e6" : "transparent",
+                borderRadius: "8px",
+              }),
+            }}
+            onChange={handleTagChange}
           />
         </div>
 
@@ -87,11 +106,9 @@ export default function CreateNote() {
             onChange={setBody}
             theme="snow"
             placeholder="Write your note here..."
-            className={
-              errors
-                ? "border border-red-500 rounded lg bg-white"
-                : "bg-white rounded-lg"
-            }
+            className={`custom-quill bg-white rounded-lg ${
+              errors ? "border border-red-500" : ""
+            }`}
             style={{
               minHeight: "200px",
               padding: "15px",
