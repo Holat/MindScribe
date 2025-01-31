@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BackArrow from "../../components/BackArrow";
 import headerLogo from "../../assets/bulgatti.png";
 import ReactQuill from "react-quill";
 import AnimatedLoader from "../../assets/loading.svg";
 import toast from "react-hot-toast";
-import { createNote, fetchTags } from "../../utils/api";
+import { createNote } from "../../utils/api";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Select from "react-select";
+import TagSelect from "../../components/TagSelect";
+import { useNote } from "../../../context/NoteContext";
 
 export default function CreateNote() {
   //note params.
   const { user } = useAuth();
+  const { fetchNote } = useNote();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
-  const [options, setOptions] = useState([]);
   const [tag, setTag] = useState([]);
 
   //error handling.
@@ -24,9 +25,7 @@ export default function CreateNote() {
   const navigate = useNavigate();
 
   const handleTagChange = (selectedOptions) => {
-    setTag(
-      selectedOptions ? selectedOptions.map((option) => option.value) : []
-    );
+    setTag(selectedOptions);
   };
 
   async function handleSubmit() {
@@ -38,20 +37,11 @@ export default function CreateNote() {
       setErros("");
 
       await createNote({ user_id: user?.id, body, title, tags: tag });
+      fetchNote();
       navigate("/home");
     }
     setLoading(false);
   }
-
-  const fetch = async () => {
-    const data = await fetchTags();
-    const mapOp = data.map((tag) => ({ value: tag.name, label: tag.name }));
-    setOptions(mapOp);
-  };
-
-  useEffect(() => {
-    fetch();
-  }, []);
 
   return (
     <div>
@@ -84,19 +74,7 @@ export default function CreateNote() {
 
         {/* Tag Input */}
         <div className="flex flex-col gap-2">
-          <Select
-            options={options}
-            isMulti
-            value={options.filter((stag) => tag.includes(stag.value))}
-            styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                borderColor: state.isFocused ? "#1447e6" : "transparent",
-                borderRadius: "8px",
-              }),
-            }}
-            onChange={handleTagChange}
-          />
+          <TagSelect handleSelect={handleTagChange} />
         </div>
 
         {/* Quill Editor for Body */}

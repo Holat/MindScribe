@@ -2,10 +2,41 @@ import headerLogo from "../../assets/bulgatti.png";
 import BackArrow from "../../components/BackArrow";
 import { BiSearch } from "react-icons/bi";
 import HomeIcons from "../../components/HomeIcons";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useNote } from "../../../context/NoteContext";
+import NoteCard from "../../components/noteCard";
 
 export default function SearchInput() {
+  const { notes } = useNote();
   const [searchInput, setSearchInput] = useState("");
+  const [searchedNotes, setSearchNotes] = useState([]);
+
+  const filterNotes = useCallback(() => {
+    if (!searchInput.trim()) {
+      setSearchNotes(notes);
+      return;
+    }
+    const selected = notes
+      ?.filter((note) =>
+        note.title.toLowerCase().includes(searchInput.toLowerCase())
+      )
+      .sort((a, b) => {
+        const aIndex = a.title.toLowerCase().indexOf(searchInput.toLowerCase());
+        const bIndex = b.title.toLowerCase().indexOf(searchInput.toLowerCase());
+
+        // Prioritize titles that start with the search query
+        if (aIndex !== bIndex) return aIndex - bIndex;
+
+        // If both have the same index, sort alphabetically
+        return a.title.localeCompare(b.title);
+      });
+
+    setSearchNotes(selected);
+  }, [notes, searchInput]);
+
+  useEffect(() => {
+    filterNotes();
+  }, [filterNotes]);
 
   return (
     <div>
@@ -31,6 +62,17 @@ export default function SearchInput() {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
+      </div>
+      <div className="px-4 flex flex-col gap-8 pb-24 mt-5">
+        {searchedNotes?.map(({ id, title, tags, updated_at }) => (
+          <NoteCard
+            key={id}
+            title={title}
+            tags={tags}
+            id={id}
+            date={updated_at}
+          />
+        ))}
       </div>
 
       {/* home icons. */}

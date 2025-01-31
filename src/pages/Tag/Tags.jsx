@@ -1,8 +1,33 @@
+import { useState, useCallback, useEffect } from "react";
 import BackArrow from "../../components/BackArrow";
 import headerLogo from "../../assets/bulgatti.png";
 import HomeIcons from "../../components/HomeIcons";
+import TagSelect from "../../components/TagSelect";
+import NoteCard from "../../components/noteCard";
+import { useNote } from "../../../context/NoteContext";
 
 export default function Tags() {
+  const { notes } = useNote();
+  const [tag, setTag] = useState([]);
+  const [selectedNotes, setSelectedNotes] = useState([]);
+  const handleTagChange = (selectedOptions) => setTag(selectedOptions);
+
+  const filterNotes = useCallback(() => {
+    if (tag?.length < 1) {
+      setSelectedNotes(notes);
+      return;
+    }
+    const selected = notes?.filter((note) =>
+      note.tags.some((t) => tag?.includes(t))
+    );
+
+    setSelectedNotes(selected);
+  }, [notes, tag]);
+
+  useEffect(() => {
+    filterNotes();
+  }, [filterNotes]);
+
   return (
     <div>
       <div className="flex flex-row justify-between items-center">
@@ -16,13 +41,18 @@ export default function Tags() {
 
       {/* tags dropdown. */}
       <div className="px-4 mt-5">
-        <select className="w-full border border-white focus:border-blue-700 outline-none bg-slate-50 p-4 rounded-2xl outline-transparent placeholder:tracking-wide">
-          <option className="text-[13px]">Select tag</option>
-          <option className="text-[13px]">Dev</option>
-          <option className="text-[13px]">Personal</option>
-          <option className="text-[13px]">React</option>
-          <option className="text-[13px]">Travel</option>
-        </select>
+        <TagSelect handleSelect={handleTagChange} />
+      </div>
+      <div className="px-4 flex flex-col gap-8 pb-24 mt-5">
+        {selectedNotes?.map(({ id, title, tags, updated_at }) => (
+          <NoteCard
+            key={id}
+            title={title}
+            tags={tags}
+            id={id}
+            date={updated_at}
+          />
+        ))}
       </div>
 
       {/* home icons. */}

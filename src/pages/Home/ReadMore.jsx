@@ -6,31 +6,26 @@ import { FaTrash } from "react-icons/fa";
 import { BsArchive } from "react-icons/bs";
 import HomeIcons from "../../components/HomeIcons";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchNote, deleteNote } from "../../utils/api";
+import { fetchNoteById, deleteNote, toggleArchiveNote } from "../../utils/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNote } from "../../../context/NoteContext";
 
 export default function ReadMore() {
   const [note, setNote] = useState(null);
+  const { fetchNote } = useNote();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   const navigate = useNavigate();
 
-  const getNoteById = async () => {
-    const data = await fetchNote(id);
-    setNote(data);
-  };
-
   const handleDelete = async () => {
     setLoading(true);
-    // const success = await deleteNote(id);
-    // success && navigate("/home");
-
     toast.promise(
       async () => {
         const success = await deleteNote(id);
         setLoading(false);
+        fetchNote();
         success && navigate("/home");
       },
       {
@@ -41,9 +36,39 @@ export default function ReadMore() {
     );
   };
 
+  const handleArchive = async () => {
+    setLoading(true);
+    toast.promise(
+      async () => {
+        const success = await toggleArchiveNote(id, note?.isArchived);
+        setLoading(false);
+        success && navigate("/archive");
+      },
+      {
+        loading: "Loading",
+        success: note.isArchived ? "Note Unarchived" : "Note Archived",
+        error: "Error Archiving",
+      }
+    );
+  };
+
   useEffect(() => {
-    getNoteById();
-  }, []);
+    (async () => {
+      setLoading(true);
+      toast.promise(
+        async () => {
+          const data = await fetchNoteById(id);
+          setNote(data);
+          setLoading(false);
+        },
+        {
+          loading: "Loading",
+          success: "",
+          error: "Error when fetching",
+        }
+      );
+    })();
+  }, [id]);
 
   return (
     <div>
@@ -66,7 +91,9 @@ export default function ReadMore() {
             <button type="button" onClick={handleDelete} disabled={loading}>
               <FaTrash size={15} className="text-red-500 cursor-pointer" />
             </button>
-            <BsArchive size={15} className="text-blue-700 cursor-pointer" />
+            <button onClick={handleArchive} disabled={loading}>
+              <BsArchive size={15} className="text-blue-700 cursor-pointer" />
+            </button>
           </div>
         </div>
 

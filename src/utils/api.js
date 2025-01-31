@@ -19,14 +19,11 @@ export const fetchAllNotes = async (user_id) => {
     .eq("user_id", user_id)
     .order("updated_at");
 
-  if (error) {
-    toast.error("Error fetching note");
-    return null;
-  }
+  if (error) throw error;
   return data;
 };
 
-export const fetchNote = async (id) => {
+export const fetchNoteById = async (id) => {
   if (!id) return null;
   const { data, error } = await supabase
     .from("notes")
@@ -34,10 +31,29 @@ export const fetchNote = async (id) => {
     .eq("id", id)
     .single();
 
-  if (error) {
-    return null;
-  }
+  if (error) throw error;
+  return data;
+};
 
+export const toggleArchiveNote = async (noteId, isArchived) => {
+  const { error } = await supabase
+    .from("notes")
+    .update({ isArchived: !isArchived }) // Toggle archive status
+    .eq("id", noteId);
+
+  if (error) throw error;
+  return true;
+};
+
+export const fetchArchivedNotes = async (id) => {
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*")
+    .eq("user_id", id)
+    .eq("isArchived", true) // Get only archived notes
+    .order("created_at", { ascending: false }); // Optional: Sort by newest first
+
+  if (error) throw error;
   return data;
 };
 

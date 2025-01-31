@@ -2,24 +2,11 @@ import HomeHeader from "../../components/HomeHeader";
 import HomeIcons from "../../components/HomeIcons";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { fetchAllNotes } from "../../utils/api";
-import { useAuth } from "../../../context/AuthContext";
-import { useEffect, useState } from "react";
 import NoteCard from "../../components/noteCard";
+import { useNote } from "../../../context/NoteContext";
 
 export default function OnBoarding() {
-  const [notes, setNotes] = useState([]);
-  const { user } = useAuth();
-
-  const getNotes = async () => {
-    const data = await fetchAllNotes(user?.id);
-    setNotes(data);
-  };
-
-  console.log(notes);
-  useEffect(() => {
-    getNotes();
-  }, [user]);
+  const { notes } = useNote();
 
   return (
     <div className="">
