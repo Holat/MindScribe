@@ -57,14 +57,13 @@ export const fetchArchivedNotes = async (id) => {
   return data;
 };
 
-export const createNote = async ({ user_id, title, body, tags }) => {
-  //   if (!user_id) return;
-
-  console.log(typeof tags, tags);
+export const createNote = async ({ user_id, title, html, tags, delta }) => {
   if (!tags) return;
   const { data, error } = await supabase
     .from("notes")
-    .insert([{ user_id, title, body, tags }])
+    .insert([
+      { user_id, title, body: html, tags, note_delta: JSON.stringify(delta) },
+    ])
     .select()
     .single();
 

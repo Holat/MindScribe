@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import BackArrow from "../../components/BackArrow";
 import headerLogo from "../../assets/bulgatti.png";
-import ReactQuill from "react-quill";
+import Quill from "quill";
 import AnimatedLoader from "../../assets/loading.svg";
 import toast from "react-hot-toast";
 import { createNote } from "../../utils/api";
@@ -9,6 +9,9 @@ import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import TagSelect from "../../components/TagSelect";
 import { useNote } from "../../../context/NoteContext";
+import Editor from "../../components/Editor";
+
+const Delta = Quill.import("delta");
 
 export default function CreateNote() {
   //note params.
@@ -17,6 +20,7 @@ export default function CreateNote() {
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [tag, setTag] = useState([]);
+  const quillRef = useRef();
 
   //error handling.
   const [errors, setErros] = useState("");
@@ -30,13 +34,21 @@ export default function CreateNote() {
 
   async function handleSubmit() {
     setLoading(true);
-    if (body === "") toast.error("Body cannot be empty");
-    else if (title === "") toast.error("Title cannot be empty");
+    const html = quillRef?.current.root.innerHTML;
+    const bodyLength = html.replace(/<(.|\n)*?>/g, "").trim();
+    if (bodyLength < 1) toast.error("Body cannot be empty");
+    else if (title.trim() === "") toast.error("Title cannot be empty");
     else if (tag === "") toast.error("Tag cannot be empty");
     else {
       setErros("");
 
-      await createNote({ user_id: user?.id, body, title, tags: tag });
+      await createNote({
+        user_id: user?.id,
+        delta: body,
+        title,
+        tags: tag,
+        html,
+      });
       fetchNote();
       navigate("/home");
     }
@@ -78,7 +90,7 @@ export default function CreateNote() {
         </div>
 
         {/* Quill Editor for Body */}
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <ReactQuill
             value={body}
             onChange={setBody}
@@ -92,7 +104,19 @@ export default function CreateNote() {
               padding: "15px",
             }}
           />
-        </div>
+        </div> */}
+        <Editor
+          ref={quillRef}
+          defaultValue={new Delta()
+            .insert("Hello")
+            .insert("\n", { header: 1 })
+            .insert("Create ")
+            .insert("a", { bold: true })
+            .insert(" ")
+            .insert("note", { underline: true })
+            .insert("\n")}
+          onTextChange={setBody}
+        />
 
         <div className="text-center">
           <button
