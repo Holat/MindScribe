@@ -13,6 +13,7 @@ import ReadMore from "./pages/Home/ReadMore";
 import ArchiveReadMore from "./pages/Archive/ArchiveReadMore";
 import Tags from "./pages/Tag/Tags";
 import { NoteProvider } from "../context/NoteContext";
+import EditNote from "./pages/Home/EditNote";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/archive" element={<Archive />} />
                 <Route path="/read-more/:id" element={<ReadMore />} />
+                <Route path="/edit-note" element={<EditNote />} />
                 <Route
                   path="/archive-read-more"
                   element={<ArchiveReadMore />}

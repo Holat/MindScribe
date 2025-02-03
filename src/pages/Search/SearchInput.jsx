@@ -5,6 +5,7 @@ import HomeIcons from "../../components/HomeIcons";
 import { useState, useCallback, useEffect } from "react";
 import { useNote } from "../../../context/NoteContext";
 import NoteCard from "../../components/noteCard";
+import HomeHeader from "../../components/HomeHeader";
 
 export default function SearchInput() {
   const { notes } = useNote();
@@ -40,7 +41,7 @@ export default function SearchInput() {
 
   return (
     <div>
-      <div className="flex flex-row justify-between items-center">
+      <div className="lg:hidden flex flex-row justify-between items-center">
         <div className="">
           <BackArrow />
         </div>
@@ -48,9 +49,12 @@ export default function SearchInput() {
           <img src={headerLogo} alt="Logo" className="w-20 mr-5" />
         </div>
       </div>
+      <div className="hidden lg:grid">
+        <HomeHeader />
+      </div>
 
       {/* search input. */}
-      <div className="ml-5 mt-3 flex items-center border border-white rounded-full bg-slate-50 p-2 w-80 focus-within:border-blue-700 focus-within:border-2">
+      <div className="ml-5 mt-3 lg:mt-7 flex items-center border border-white rounded-full bg-slate-50 p-2 w-80 focus-within:border-blue-700 focus-within:border-2">
         <div className="flex items-center justify-center bg-white rounded-full h-8 w-8 mr-3">
           <BiSearch size={14} className="text-black" />
         </div>
@@ -63,7 +67,7 @@ export default function SearchInput() {
           onChange={(e) => setSearchInput(e.target.value)}
         />
       </div>
-      <div className="px-4 flex flex-col gap-8 pb-24 mt-5">
+      <div className="px-4 flex flex-col gap-8 pb-24 mt-5 lg:grid lg:grid-rows-4 lg:gap-4 lg:pb-10 grid-cols-4">
         {searchedNotes?.map(({ id, title, tags, updated_at }) => (
           <NoteCard
             key={id}
@@ -76,7 +80,7 @@ export default function SearchInput() {
       </div>
 
       {/* home icons. */}
-      <div>
+      <div className="lg:hidden">
         <HomeIcons />
       </div>
     </div>

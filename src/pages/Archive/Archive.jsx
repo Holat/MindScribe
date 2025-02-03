@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { fetchArchivedNotes } from "../../utils/api";
 import { useAuth } from "../../../context/AuthContext";
 import NoteCard from "../../components/noteCard";
+import HomeHeader from "../../components/HomeHeader";
 
 export default function Archive() {
   const { user } = useAuth();
@@ -27,7 +28,7 @@ export default function Archive() {
 
   return (
     <div>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-center lg:hidden">
         <div className="">
           <BackArrow />
         </div>
@@ -35,10 +36,15 @@ export default function Archive() {
           <img src={headerLogo} alt="Logo" className="w-20 mr-5" />
         </div>
       </div>
+      <div className="hidden lg:grid">
+        <HomeHeader />
+      </div>
 
-      <div className="px-5 text-[17px] font-bold mt-4 mb-4">Archived Notes</div>
+      <div className="px-5 lg:px-10 text-[17px] font-bold mt-4 mb-4 text-blue-700 lg:mt-6">
+        Archived Notes
+      </div>
 
-      <div className="px-4 flex flex-col gap-8 pb-24">
+      <div className="px-4 lg:px-10 flex flex-col gap-8 pb-24 lg:grid lg:grid-rows-4 lg:gap-4 lg:pb-10 grid-cols-4">
         {archived?.map(({ id, title, tags, updated_at }) => (
           <NoteCard
             key={id}
@@ -51,7 +57,7 @@ export default function Archive() {
       </div>
 
       {/* home icons. */}
-      <div>
+      <div className="lg:hidden">
         <HomeIcons />
       </div>
     </div>

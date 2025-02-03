@@ -5,11 +5,12 @@ import { CgTag } from "react-icons/cg";
 import { FaTrash } from "react-icons/fa";
 import { BsArchive } from "react-icons/bs";
 import HomeIcons from "../../components/HomeIcons";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchNoteById, deleteNote, toggleArchiveNote } from "../../utils/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNote } from "../../../context/NoteContext";
+import { BiEdit } from "react-icons/bi";
 
 export default function ReadMore() {
   const [note, setNote] = useState(null);
@@ -83,17 +84,20 @@ export default function ReadMore() {
 
       <div className="px-5 mt-2">
         {/* title with delete and archive icons. */}
-        <div className="flex flex-row justify-between items-center">
+        <div className="lg:flex lg:flex-row lg:justify-between lg:items-center flex flex-col">
           <div className="font-bold text-[20px] font-sans tracking-wider">
             {note?.title}
           </div>
-          <div className="flex flex-row items-center gap-6 mr-2">
+          <div className="flex flex-row items-center lg:gap-6 gap-4 lg:mt-0 mt-2 mr-2">
             <button type="button" onClick={handleDelete} disabled={loading}>
               <FaTrash size={15} className="text-red-500 cursor-pointer" />
             </button>
             <button onClick={handleArchive} disabled={loading}>
               <BsArchive size={15} className="text-blue-700 cursor-pointer" />
             </button>
+            <Link to="/edit-note">
+              <BiEdit size={15} className="text-green-500 cursor-pointer" />
+            </Link>
           </div>
         </div>
 
@@ -116,7 +120,7 @@ export default function ReadMore() {
       </div>
 
       {/* home icons. */}
-      <div>
+      <div className="lg:hidden">
         <HomeIcons />
       </div>
     </div>
