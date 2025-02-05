@@ -26,7 +26,7 @@ export default function ReadMore() {
       async () => {
         const success = await deleteNote(id);
         setLoading(false);
-        fetchNote();
+        fetchNote(true);
         success && navigate("/home");
       },
       {
@@ -95,7 +95,7 @@ export default function ReadMore() {
             <button onClick={handleArchive} disabled={loading}>
               <BsArchive size={15} className="text-blue-700 cursor-pointer" />
             </button>
-            <Link to="/edit-note">
+            <Link to={`/edit-note/${id}`}>
               <BiEdit size={15} className="text-green-500 cursor-pointer" />
             </Link>
           </div>
@@ -118,7 +118,6 @@ export default function ReadMore() {
           <div dangerouslySetInnerHTML={{ __html: note?.body }} />
         </div>
       </div>
-
       {/* home icons. */}
       <div className="lg:hidden">
         <HomeIcons />

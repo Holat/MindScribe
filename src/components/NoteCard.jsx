@@ -9,7 +9,7 @@ const NoteCard = ({ id, title, tags, date }) => {
     <div>
       <Link
         to={`/read-more/${id}`}
-        className="flex flex-col justify-between lg:w-72 px-4 border border-white hover:border-blue-700 duration-300 hover:duration-300 bg-white rounded-xl lg:p-2 p-4 cursor-pointer shadow-sm lg:h-[10em]"
+        className="flex flex-col justify-between lg:w-full px-4 border border-white hover:border-blue-700 duration-300 hover:duration-300 bg-white rounded-xl lg:p-2 p-4 cursor-pointer shadow-sm lg:h-[10em]"
       >
         <div className="">
           <div

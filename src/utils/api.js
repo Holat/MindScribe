@@ -17,7 +17,8 @@ export const fetchAllNotes = async (user_id) => {
     .from("notes")
     .select("id, title, tags, updated_at")
     .eq("user_id", user_id)
-    .order("updated_at");
+    .eq("isArchived", false)
+    .order("updated_at", { ascending: false });
 
   if (error) throw error;
   return data;
@@ -84,19 +85,32 @@ export const createNote = async ({ user_id, title, html, tags, delta }) => {
  * @param tags - The new array of tags (optional).
  * @returns The updated note or `null` if an error occurs.
  */
-export const updateNote = async (id, title, content, tags) => {
-  const updates = { title, content, tags };
-
+export const updateNote = async ({
+  user_id,
+  title,
+  html,
+  tags,
+  delta,
+  note_id,
+}) => {
+  if (!tags) return;
   const { data, error } = await supabase
     .from("notes")
-    .update(updates)
-    .eq("id", id)
-    .select()
-    .single();
+    .update({
+      user_id,
+      title,
+      body: html,
+      tags,
+      note_delta: JSON.stringify(delta),
+    })
+    .eq("id", note_id);
 
   if (error) {
-    return null;
+    toast.error("Error updating note");
+    throw error;
   }
+
+  toast.success("Note updated successfully");
   return data;
 };
 

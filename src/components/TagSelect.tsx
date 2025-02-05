@@ -3,28 +3,32 @@ import React, { useEffect, useState } from "react";
 import { fetchTags } from "../utils/api";
 import Select from "react-select";
 
-const TagSelect = ({ handleSelect }) => {
+const TagSelect = ({ handleSelect, defaultTags = [] }) => {
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([]);
 
   const fetch = async () => {
     const data = await fetchTags();
-    const mapOp = data?.map((tag) => ({ value: tag.name, label: tag.name }));
-    setOptions(mapOp);
+    const mappedOptions =
+      data?.map((tag) => ({ value: tag.name, label: tag.name })) || [];
+
+    setOptions(mappedOptions);
   };
 
   const handleTagChange = (selectedOptions) => {
-    const tags = selectedOptions
-      ? selectedOptions.map((option) => option.value)
-      : [];
-    setSelected(tags);
-    handleSelect(tags);
+    setSelected(selectedOptions);
+    handleSelect(selectedOptions.map((option) => option.value));
   };
+
+  useEffect(() => {
+    defaultTags.length > 0 &&
+      setSelected(defaultTags) &&
+      console.log(defaultTags);
+  }, [defaultTags]);
 
   useEffect(() => {
     fetch();
   }, []);
-
   return (
     <Select
       placeholder="Select Tags..."

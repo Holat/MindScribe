@@ -10,9 +10,10 @@ import { useAuth } from "../../../context/AuthContext";
 export default function OnBoarding() {
   const { notes } = useNote();
   const { user } = useAuth();
+  const noteA = notes && notes.length > 0;
 
   return (
-    <div className="lg:min-h-screen lg:flex lg:flex-col">
+    <div className="lg:h-dvh lg:flex lg:flex-col">
       <div className="lg:hidden">
         <Welcome />
       </div>
@@ -22,13 +23,13 @@ export default function OnBoarding() {
 
       {/* desktop view. */}
       <div
-        className={`hidden lg:flex lg:flex-row lg:justify-between lg:px-20 lg:h-full ${
-          !notes && "lg:justify-center"
+        className={`hidden lg:flex lg:flex-row lg:justify-between   lg:px-20 lg:h-full lg:items-center ${
+          !noteA && "lg:justify-center"
         }`}
       >
         <div
           className={`hidden lg:flex lg:flex-col lg:gap-2 lg:justify-center ${
-            !notes && "lg:items-center"
+            !noteA && "lg:items-center"
           }`}
         >
           <div className="flex flex-row items-center gap-0">
@@ -40,7 +41,7 @@ export default function OnBoarding() {
             >
               Welcome,{" "}
               <div
-                className={`text-blue-700 font-bold ${!notes && "text-center"}`}
+                className={`text-blue-700 font-bold ${!noteA && "text-center"}`}
               >{`${user?.fullName.split(" ")[0] || "User"}`}</div>
             </div>
           </div>
@@ -55,12 +56,12 @@ export default function OnBoarding() {
           </Link>
         </div>
 
-        {notes && (
-          <div className="w-[50%] h-full">
+        {noteA && (
+          <div className="w-[50%]">
             <div className="text-[17px] text-blue-700 font-bold mb-4 lg:mt-4">
               Recent Notes
             </div>
-            <div className="grid grid-rows-2 gap-2 pb-10 grid-cols-2">
+            <div className="grid grid-rows-2 gap-6 pb-10 grid-cols-2">
               {notes?.slice(0, 5).map(({ id, title, tags, updated_at }) => (
                 <NoteCard
                   key={id}
@@ -72,7 +73,7 @@ export default function OnBoarding() {
               ))}
               <Link
                 to="/search"
-                className="flex text-blue-700 font-bold hover:border-blue-700 duration-300 hover:duration-300 bg-transparent rounded-xl p-4 cursor-pointer items-center justify-center"
+                className="flex text-blue-400 hover:text-blue-700 font-bold hover:border-blue-700 duration-300 hover:duration-300 bg-transparent rounded-xl p-4 cursor-pointer items-center justify-center border border-gray-300 border-dashed"
               >
                 See All
               </Link>

@@ -1,25 +1,25 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import BackArrow from "../../components/BackArrow";
 import headerLogo from "../../assets/bulgatti.png";
-import Quill from "quill";
 import AnimatedLoader from "../../assets/loading.svg";
 import toast from "react-hot-toast";
-import { createNote } from "../../utils/api";
+import { fetchNoteById, updateNote } from "../../utils/api";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import TagSelect from "../../components/TagSelect";
 import { useNote } from "../../../context/NoteContext";
 import Editor from "../../components/Editor";
-
-const Delta = Quill.import("delta");
+import { useParams } from "react-router-dom";
 
 export default function EditNote() {
   //note params.
+  const { id } = useParams();
   const { user } = useAuth();
   const { fetchNote } = useNote();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [tag, setTag] = useState([]);
+  const [note, setNote] = useState(null);
   const quillRef = useRef();
 
   //error handling.
@@ -27,6 +27,13 @@ export default function EditNote() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const areArraysEqual = (arrA, arrB) =>
+    arrA.length === arrB.length &&
+    arrA.every((val, index) => val === arrB[index]);
+
+  const areJSONEqual = (jsonA, jsonB) =>
+    JSON.stringify(jsonA) === JSON.stringify(jsonB);
 
   const handleTagChange = (selectedOptions) => {
     setTag(selectedOptions);
@@ -39,21 +46,53 @@ export default function EditNote() {
     if (bodyLength < 1) toast.error("Body cannot be empty");
     else if (title.trim() === "") toast.error("Title cannot be empty");
     else if (tag === "") toast.error("Tag cannot be empty");
+    else if (
+      title === note.title ||
+      areArraysEqual(tag, note?.tags) ||
+      areJSONEqual(body, note?.note_delta)
+    )
+      toast.error("Please make a change");
     else {
       setErros("");
 
-      await createNote({
-        user_id: user?.id,
-        delta: body,
-        title,
-        tags: tag,
-        html,
-      });
-      fetchNote();
-      navigate("/home");
+      try {
+        await updateNote({
+          user_id: user?.id,
+          delta: body,
+          title,
+          tags: tag,
+          html,
+          note_id: id,
+        });
+        fetchNote(true);
+        navigate(`/read-more/${id}`);
+      } catch (error) {
+        console.log(error);
+      }
     }
     setLoading(false);
   }
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      fetchNoteById(id)
+        .then((note) => {
+          setNote(note);
+          setTitle(note?.title);
+          setTag(note?.tags);
+          const delta = note?.note_delta && JSON.parse(note?.note_delta);
+          setBody(delta);
+          quillRef?.current.setContents(delta);
+        })
+        .catch(() => {
+          toast.error("Error when fetching");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    })();
+  }, [id]);
 
   return (
     <div>
@@ -86,7 +125,7 @@ export default function EditNote() {
 
         {/* Tag Input */}
         <div className="flex flex-col gap-2">
-          <TagSelect handleSelect={handleTagChange} />
+          <TagSelect handleSelect={handleTagChange} defaultTags={tag} />
         </div>
 
         {/* Quill Editor for Body */}
@@ -105,18 +144,7 @@ export default function EditNote() {
             }}
           />
         </div> */}
-        <Editor
-          ref={quillRef}
-          defaultValue={new Delta()
-            .insert("Hello")
-            .insert("\n", { header: 1 })
-            .insert("Create ")
-            .insert("a", { bold: true })
-            .insert(" ")
-            .insert("note", { underline: true })
-            .insert("\n")}
-          onTextChange={setBody}
-        />
+        <Editor ref={quillRef} d onTextChange={setBody} />
 
         <div className="text-center">
           <button

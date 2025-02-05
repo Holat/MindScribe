@@ -31,7 +31,7 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/archive" element={<Archive />} />
                 <Route path="/read-more/:id" element={<ReadMore />} />
-                <Route path="/edit-note" element={<EditNote />} />
+                <Route path="/edit-note/:id" element={<EditNote />} />
                 <Route
                   path="/archive-read-more"
                   element={<ArchiveReadMore />}

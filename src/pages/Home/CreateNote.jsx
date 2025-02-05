@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import BackArrow from "../../components/BackArrow";
 import headerLogo from "../../assets/bulgatti.png";
-import Quill from "quill";
 import AnimatedLoader from "../../assets/loading.svg";
 import toast from "react-hot-toast";
 import { createNote } from "../../utils/api";
@@ -10,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import TagSelect from "../../components/TagSelect";
 import { useNote } from "../../../context/NoteContext";
 import Editor from "../../components/Editor";
-
-const Delta = Quill.import("delta");
 
 export default function CreateNote() {
   //note params.
@@ -49,7 +46,7 @@ export default function CreateNote() {
         tags: tag,
         html,
       });
-      fetchNote();
+      fetchNote(true);
       navigate("/home");
     }
     setLoading(false);
@@ -105,18 +102,7 @@ export default function CreateNote() {
             }}
           />
         </div> */}
-        <Editor
-          ref={quillRef}
-          defaultValue={new Delta()
-            .insert("Hello")
-            .insert("\n", { header: 1 })
-            .insert("Create ")
-            .insert("a", { bold: true })
-            .insert(" ")
-            .insert("note", { underline: true })
-            .insert("\n")}
-          onTextChange={setBody}
-        />
+        <Editor ref={quillRef} onTextChange={setBody} />
 
         <div className="text-center">
           <button

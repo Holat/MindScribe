@@ -34,8 +34,9 @@ const Editor = forwardRef(
         quill.setContents(defaultValueRef.current);
       }
 
-      quill.on(Quill.events.TEXT_CHANGE, (...args) => {
-        onTextChangeRef.current?.(...args);
+      quill.on(Quill.events.TEXT_CHANGE, () => {
+        const fullDelta = quill.getContents();
+        onTextChangeRef.current?.(fullDelta);
       });
 
       quill.on(Quill.events.SELECTION_CHANGE, (...args) => {

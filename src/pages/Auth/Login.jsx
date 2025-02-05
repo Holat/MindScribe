@@ -16,9 +16,10 @@ export default function Login() {
   const [error, setError] = useState("");
 
   async function handleSubmit() {
-    if (email === "" || password === "") setError("This field cannot be empty");
+    if (email.trim() === "" || password === "")
+      setError("This field cannot be empty");
     else setError("");
-    await signIn(email, password);
+    await signIn(email.trim(), password);
   }
 
   return (
