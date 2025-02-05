@@ -39,6 +39,14 @@ export default function EditNote() {
     setTag(selectedOptions);
   };
 
+  const reset = () => {
+    setTitle(note?.title);
+    setTag(note?.tags);
+    const delta = note?.note_delta && JSON.parse(note?.note_delta);
+    setBody(delta);
+    quillRef?.current.setContents(delta);
+  };
+
   async function handleSubmit() {
     setLoading(true);
     const html = quillRef?.current.root.innerHTML;
@@ -47,9 +55,9 @@ export default function EditNote() {
     else if (title.trim() === "") toast.error("Title cannot be empty");
     else if (tag === "") toast.error("Tag cannot be empty");
     else if (
-      title === note.title ||
-      areArraysEqual(tag, note?.tags) ||
-      areJSONEqual(body, note?.note_delta)
+      title === note.title &&
+      areArraysEqual(tag, note?.tags) &&
+      areJSONEqual(JSON.stringify(body), note?.note_delta)
     )
       toast.error("Please make a change");
     else {
@@ -105,7 +113,16 @@ export default function EditNote() {
         </div>
       </div>
 
-      <div className="px-5 text-[17px] font-bold mt-2">Edit Note</div>
+      <div className="flex justify-between items-center">
+        <div className="px-5 text-[17px] font-bold mt-2">Edit Note</div>
+        <button
+          disabled={loading}
+          onClick={reset}
+          className="mr-5 text-blue-600"
+        >
+          Reset
+        </button>
+      </div>
 
       <div className="flex flex-col gap-5 px-5 mt-2">
         {/* Title Input */}
