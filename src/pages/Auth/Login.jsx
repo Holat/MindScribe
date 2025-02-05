@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiMail } from "react-icons/fi";
 import { GiPadlock } from "react-icons/gi";
 import headerLogo from "../../assets/bulgatti.png";
@@ -8,8 +8,8 @@ import AnimatedLoader from "../../assets/loading.svg";
 import { useAuth } from "../../../context/AuthContext";
 
 export default function Login() {
-  const { signIn, loading } = useAuth();
-  const [email, setEmail] = useState("");
+  const { signIn, loading, user } = useAuth();
+  const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState("");
 
   //error handling.
@@ -21,6 +21,10 @@ export default function Login() {
     else setError("");
     await signIn(email.trim(), password);
   }
+
+  useEffect(() => {
+    user?.email && setEmail(user?.email);
+  }, [user]);
 
   return (
     <div className="text-center items-center flex-col flex justify-center h-dvh">

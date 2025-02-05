@@ -16,8 +16,9 @@ const TagSelect = ({ handleSelect, defaultTags = [] }) => {
   };
 
   const handleTagChange = (selectedOptions) => {
-    setSelected(selectedOptions);
-    handleSelect(selectedOptions.map((option) => option.value));
+    const selectedOp = selectedOptions.map((option) => option.value);
+    setSelected(selectedOp);
+    handleSelect(selectedOp);
   };
 
   useEffect(() => {

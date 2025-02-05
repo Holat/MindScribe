@@ -13,7 +13,7 @@ export default function OnBoarding() {
   const noteA = notes && notes.length > 0;
 
   return (
-    <div className="lg:h-dvh lg:flex lg:flex-col">
+    <div className="lg:h-dvh lg:flex lg:flex-col relative">
       <div className="lg:hidden">
         <Welcome />
       </div>
@@ -97,7 +97,7 @@ export default function OnBoarding() {
 
       {/* create new post button */}
       <Link className="lg:hidden" to="/create-note">
-        <div className="border border-transparent p-6 rounded-full bg-blue-700 text-white cursor-pointer right-0 top-[550px] mr-3 fixed hover:opacity-70 duration-300">
+        <div className="border border-transparent p-6 rounded-full bg-blue-700 text-white cursor-pointer right-0 bottom-[90px] mr-3 fixed hover:opacity-70 duration-300">
           <FaPlus className="" />
         </div>
       </Link>
