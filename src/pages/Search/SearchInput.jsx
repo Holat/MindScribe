@@ -4,7 +4,7 @@ import { BiSearch } from "react-icons/bi";
 import HomeIcons from "../../components/HomeIcons";
 import { useState, useCallback, useEffect } from "react";
 import { useNote } from "../../../context/NoteContext";
-import NoteCard from "../../components/noteCard";
+import NoteCard from "../../components/NoteCard";
 import HomeHeader from "../../components/HomeHeader";
 
 export default function SearchInput() {

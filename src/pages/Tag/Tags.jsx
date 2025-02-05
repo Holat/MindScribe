@@ -3,7 +3,7 @@ import BackArrow from "../../components/BackArrow";
 import headerLogo from "../../assets/bulgatti.png";
 import HomeIcons from "../../components/HomeIcons";
 import TagSelect from "../../components/TagSelect";
-import NoteCard from "../../components/noteCard";
+import NoteCard from "../../components/NoteCard";
 import { useNote } from "../../../context/NoteContext";
 import HomeHeader from "../../components/HomeHeader";
 
