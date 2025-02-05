@@ -2,7 +2,7 @@ import HomeHeader from "../../components/HomeHeader";
 import HomeIcons from "../../components/HomeIcons";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import NoteCard from "../../components/noteCard";
+import NoteCard from "../../components/NoteCard";
 import { useNote } from "../../../context/NoteContext";
 import Welcome from "../../components/Welcome";
 import { useAuth } from "../../../context/AuthContext";
