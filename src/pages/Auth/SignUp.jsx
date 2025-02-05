@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
 import AnimatedLoader from "../../assets/loading.svg";
 import headerLogo from "../../assets/bulgatti.png";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import BackArrow from "../../components/BackArrow";
 
 export default function SignUp() {

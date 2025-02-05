@@ -1,4 +1,4 @@
-import note from "../assets/not.avif";
+import note from "../assets/not.webp";
 import headerLogo from "../assets/bulgatti.png";
 
 export default function Welcome() {

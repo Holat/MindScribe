@@ -4,10 +4,10 @@ import headerLogo from "../../assets/bulgatti.png";
 import AnimatedLoader from "../../assets/loading.svg";
 import toast from "react-hot-toast";
 import { fetchNoteById, updateNote } from "../../utils/api";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import TagSelect from "../../components/TagSelect";
-import { useNote } from "../../../context/NoteContext";
+import { useNote } from "../../context/NoteContext";
 import Editor from "../../components/Editor";
 import { useParams } from "react-router-dom";
 
@@ -75,7 +75,7 @@ export default function EditNote() {
         fetchNote(true);
         navigate(`/read-more/${id}`);
       } catch (error) {
-        console.log(error);
+        toast.error("error updating note");
       }
     }
     setLoading(false);

@@ -105,10 +105,7 @@ export const updateNote = async ({
     })
     .eq("id", note_id);
 
-  if (error) {
-    toast.error("Error updating note");
-    throw error;
-  }
+  if (error) throw error;
 
   toast.success("Note updated successfully");
   return data;

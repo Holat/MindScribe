@@ -3,7 +3,7 @@ import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import OnBoarding from "./pages/Home/OnBoarding";
-import { AuthProvider } from "../context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import CreateNote from "./pages/Home/CreateNote";
 import SearchInput from "./pages/Search/SearchInput";
@@ -12,7 +12,7 @@ import Archive from "./pages/Archive/Archive";
 import ReadMore from "./pages/Home/ReadMore";
 import ArchiveReadMore from "./pages/Archive/ArchiveReadMore";
 import Tags from "./pages/Tag/Tags";
-import { NoteProvider } from "../context/NoteContext";
+import { NoteProvider } from "./context/NoteContext";
 import EditNote from "./pages/Home/EditNote";
 
 function App() {

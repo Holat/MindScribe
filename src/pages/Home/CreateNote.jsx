@@ -4,10 +4,10 @@ import headerLogo from "../../assets/bulgatti.png";
 import AnimatedLoader from "../../assets/loading.svg";
 import toast from "react-hot-toast";
 import { createNote } from "../../utils/api";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import TagSelect from "../../components/TagSelect";
-import { useNote } from "../../../context/NoteContext";
+import { useNote } from "../../context/NoteContext";
 import Editor from "../../components/Editor";
 
 export default function CreateNote() {

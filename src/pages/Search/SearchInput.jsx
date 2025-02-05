@@ -3,7 +3,7 @@ import BackArrow from "../../components/BackArrow";
 import { BiSearch } from "react-icons/bi";
 import HomeIcons from "../../components/HomeIcons";
 import { useState, useCallback, useEffect } from "react";
-import { useNote } from "../../../context/NoteContext";
+import { useNote } from "../../context/NoteContext";
 import NoteCard from "../../components/NoteCard";
 import HomeHeader from "../../components/HomeHeader";
 

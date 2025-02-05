@@ -3,9 +3,9 @@ import HomeIcons from "../../components/HomeIcons";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import NoteCard from "../../components/NoteCard";
-import { useNote } from "../../../context/NoteContext";
+import { useNote } from "../../context/NoteContext";
 import Welcome from "../../components/Welcome";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function OnBoarding() {
   const { notes } = useNote();

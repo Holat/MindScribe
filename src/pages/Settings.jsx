@@ -2,7 +2,7 @@ import BackArrow from "../components/BackArrow";
 import headerLogo from "../assets/bulgatti.png";
 import { FaPhone, FaUser } from "react-icons/fa";
 import { FiMail } from "react-icons/fi";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import AnimatedLoader from "../assets/loading.svg";
 import { useState } from "react";
 import { GiPadlock } from "react-icons/gi";

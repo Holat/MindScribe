@@ -5,7 +5,7 @@ import headerLogo from "../../assets/bulgatti.png";
 import { Link } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
 import AnimatedLoader from "../../assets/loading.svg";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
   const { signIn, loading, user } = useAuth();

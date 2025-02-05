@@ -22,9 +22,7 @@ const TagSelect = ({ handleSelect, defaultTags = [] }) => {
   };
 
   useEffect(() => {
-    defaultTags.length > 0 &&
-      setSelected(defaultTags) &&
-      console.log(defaultTags);
+    defaultTags.length > 0 && setSelected(defaultTags);
   }, [defaultTags]);
 
   useEffect(() => {

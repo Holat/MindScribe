@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../src/utils/supabaseClient";
-import { setItem, removeItem } from "../src/utils/storage";
+import { supabase } from "../utils/supabaseClient";
+import { setItem, removeItem } from "../utils/storage";
 import toast from "react-hot-toast";
 
 const AuthContext = createContext();

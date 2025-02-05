@@ -1,7 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { formatDateTime } from "../utils/timeformat";
 
-// eslint-disable-next-line react/prop-types
 const NoteCard = ({ id, title, tags, date }) => {
   const datetime = formatDateTime(date);
 
@@ -20,7 +20,7 @@ const NoteCard = ({ id, title, tags, date }) => {
           >
             {title}
           </div>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 flex-wrap">
             {tags?.slice(0, 3).map((tag) => (
               <div
                 key={tag}

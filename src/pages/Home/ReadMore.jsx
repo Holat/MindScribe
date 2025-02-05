@@ -9,7 +9,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchNoteById, deleteNote, toggleArchiveNote } from "../../utils/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNote } from "../../../context/NoteContext";
+import { useNote } from "../../context/NoteContext";
 import { BiEdit } from "react-icons/bi";
 
 export default function ReadMore() {

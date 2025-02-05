@@ -1,7 +1,6 @@
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext";
 import headerLogo from "../assets/bulgatti.png";
 import { Link } from "react-router-dom";
-import AnimatedLoader from "../assets/loading.svg";
 import { useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 

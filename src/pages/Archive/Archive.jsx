@@ -4,7 +4,7 @@ import HomeIcons from "../../components/HomeIcons";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { fetchArchivedNotes } from "../../utils/api";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import NoteCard from "../../components/NoteCard";
 import HomeHeader from "../../components/HomeHeader";
 
