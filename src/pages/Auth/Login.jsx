@@ -23,7 +23,7 @@ export default function Login() {
   }
 
   return (
-    <div className="text-center items-center flex-col flex justify-center lg:h-dvh">
+    <div className="text-center items-center flex-col flex justify-center h-dvh">
       <div>
         <img src={headerLogo} alt="" className="w-64 py-8" />
       </div>
