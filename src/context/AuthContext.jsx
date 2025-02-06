@@ -4,6 +4,7 @@ import { supabase } from "../utils/supabaseClient";
 import { setItem, removeItem } from "../utils/storage";
 import toast from "react-hot-toast";
 
+const dev = import.meta.env.VITE_ENV_P;
 const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
@@ -68,6 +69,42 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const sendResetEmail = async (email) => {
+    if (!email) {
+      toast.error("Please enter you email in the email field");
+      return;
+    }
+    toast.promise(
+      async () => {
+        await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo:
+            dev === "dev"
+              ? ""
+              : "https://mindscribe-7bzl.onrender.com/reset-password",
+        });
+      },
+      {
+        loading: "Loading",
+        success: "Reset Password Email Sent",
+        error: "Error Sending Mail",
+      }
+    );
+  };
+
+  const resetPass = async (new_password) => {
+    toast.promise(
+      async () => {
+        await supabase.auth.updateUser({ password: new_password });
+        navigate("/");
+      },
+      {
+        loading: "Loading",
+        success: "Password Changed",
+        error: "Error changing password",
+      }
+    );
+  };
+
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -81,7 +118,17 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, loading, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        signIn,
+        loading,
+        signUp,
+        signOut,
+        sendResetEmail,
+        resetPass,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

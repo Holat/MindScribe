@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
-import { FiMail } from "react-icons/fi";
+import { useState } from "react";
 import { GiPadlock } from "react-icons/gi";
 import headerLogo from "../../assets/bulgatti.png";
-import { Link } from "react-router-dom";
 import { IoWarning } from "react-icons/io5";
 import AnimatedLoader from "../../assets/loading.svg";
 import { useAuth } from "../../context/AuthContext";
 
-export default function Login() {
-  const { signIn, loading, user, sendResetEmail } = useAuth();
-  const [email, setEmail] = useState(user?.email || "");
+export default function ResetP() {
+  const { resetPass } = useAuth();
   const [password, setPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState();
 
   //error handling.
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
-    if (email.trim() === "" || password === "")
-      setError("This field cannot be empty");
+    setLoading(true);
+    if (password !== confirmPass) setError("This field cannot be empty");
     else setError("");
-    await signIn(email.trim(), password);
+    await resetPass(password);
+    setLoading(false);
   }
-
-  useEffect(() => {
-    user?.email && setEmail(user?.email);
-  }, [user]);
 
   return (
     <div className="text-center items-center flex-col flex justify-center h-dvh">
@@ -34,35 +30,17 @@ export default function Login() {
       <div className="">
         {/* <div className="font-serif font-bold text-2xl">Welcome back!</div> */}
         <div className="-mt-4">
-          Log in to your <strong className="text-blue-700">MindScribe</strong>{" "}
-          account.
+          Change your <strong className="text-blue-700">MindScribe</strong>{" "}
+          Password.
         </div>
       </div>
       <div className="flex flex-col mt-12 gap-6 items-center">
         <div className="relative w-80">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 mb-0.5">
-            <FiMail size={14} className="" />
-          </div>
-          <input
-            type="email"
-            placeholder="Email"
-            className="font-serif border border-white rounded-full p-2 w-full placeholder:text-black placeholder:opacity-40 placeholder:font-sans pl-10 pr-10 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 text-[15px]"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {email === "" && error && (
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-              <IoWarning size={16} className="text-red-500" />
-            </div>
-          )}
-        </div>
-
-        <div className="relative w-80">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3">
             <GiPadlock size={14} className="" />
           </div>
           <input
-            type="password"
+            type="Password"
             placeholder="Password"
             className="font-serif border border-white rounded-full p-2 w-full placeholder:text-black placeholder:opacity-40 placeholder:font-sans pl-10 pr-10 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 text-[15px]"
             value={password}
@@ -75,13 +53,23 @@ export default function Login() {
           )}
         </div>
 
-        <button
-          disabled={loading}
-          onClick={() => sendResetEmail(email)}
-          className="text-end mr-6 -mt-3 opacity-50 cursor-pointer"
-        >
-          Forgot Password?
-        </button>
+        <div className="relative w-80">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+            <GiPadlock size={14} className="" />
+          </div>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="font-serif border border-white rounded-full p-2 w-full placeholder:text-black placeholder:opacity-40 placeholder:font-sans pl-10 pr-10 py-3 bg-slate-50 focus:outline-none focus:border-blue-700 focus:border-2 text-[15px]"
+            value={confirmPass}
+            onChange={(e) => setConfirmPass(e.target.value)}
+          />
+          {confirmPass === "" && error && (
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <IoWarning size={16} className="text-red-500" />
+            </div>
+          )}
+        </div>
         <div>
           <button
             onClick={handleSubmit}
@@ -91,17 +79,9 @@ export default function Login() {
             {loading ? (
               <img src={AnimatedLoader} alt="" className="w-4" />
             ) : (
-              "Log In"
+              "Reset Password"
             )}
           </button>
-        </div>
-        <div className="mt-3">
-          <div className="">
-            {"Don't have an account?"}
-            <Link to="/signup">
-              <strong className="text-blue-700 cursor-pointer"> Sign Up</strong>
-            </Link>
-          </div>
         </div>
       </div>
     </div>
