@@ -112,11 +112,11 @@ export default function OnBoarding() {
         </div>
       )}
       {!noteA && (
-        <div className="lg:hidden flex flex-col mt-4 gap-8 justify-center items-center">
-          <div className="text-[18px] italic opacity-50">No Notes..</div>
+        <div className="lg:hidden flex flex-col mt-6 gap-8 justify-center items-center">
+          <div className="text-[15px] italic opacity-50">No Notes..</div>
           <Link
             to="/create-note"
-            className="cursor-pointer hover:opacity-70 px-8 duration-300 border border-transparent bg-blue-700 text-white p-3 rounded-full shadow-2xl w-fit font-sans tracking-widest mt-8"
+            className="cursor-pointer hover:opacity-70 px-8 duration-300 border border-transparent bg-blue-700 text-white p-3 rounded-full shadow-2xl w-fit font-sans tracking-widest mt-12"
           >
             Start Scribing
           </Link>
