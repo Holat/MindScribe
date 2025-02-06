@@ -14,6 +14,7 @@ import ArchiveReadMore from "./pages/Archive/ArchiveReadMore";
 import Tags from "./pages/Tag/Tags";
 import { NoteProvider } from "./context/NoteContext";
 import EditNote from "./pages/Home/EditNote";
+import ResetP from "./pages/Auth/ResetP";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/reset-password" element={<ResetP />} />
                 <Route path="/home" element={<OnBoarding />} />
                 <Route path="/create-note" element={<CreateNote />} />
                 <Route path="/search" element={<SearchInput />} />

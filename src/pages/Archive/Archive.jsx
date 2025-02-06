@@ -13,6 +13,7 @@ export default function Archive() {
   const [archived, setArchived] = useState([]);
 
   useEffect(() => {
+    if (!user.id) return;
     toast.promise(
       async () => {
         const data = await fetchArchivedNotes(user?.id);

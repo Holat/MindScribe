@@ -18,11 +18,14 @@ export function NoteProvider({ children }) {
   const [notes, setNotes] = useState([]);
   const location = useLocation();
 
-  const path = location.pathname === "/" || location.pathname === "/signup";
+  const path =
+    location.pathname === "/" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/reset-password";
 
   const fetchNote = useCallback(
     (r = false) => {
-      if (!user?.id) return;
+      if (!user?.id) return null;
       toast.promise(
         async () => {
           const data = await fetchAllNotes(user?.id);

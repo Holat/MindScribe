@@ -68,6 +68,39 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const sendResetEmail = async (email) => {
+    if (!email) {
+      toast.error("Please enter you email in the email field");
+      return;
+    }
+    toast.promise(
+      async () => {
+        await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: "https://mindscribe-7bzl.onrender.com/reset-password",
+        });
+      },
+      {
+        loading: "Loading",
+        success: "Reset Password Email Sent",
+        error: "Error Sending Mail",
+      }
+    );
+  };
+
+  const resetPass = async (new_password) => {
+    toast.promise(
+      async () => {
+        await supabase.auth.updateUser({ password: new_password });
+        navigate("/");
+      },
+      {
+        loading: "Loading",
+        success: "Password Changed",
+        error: "Error changing password",
+      }
+    );
+  };
+
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -81,7 +114,17 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, loading, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        signIn,
+        loading,
+        signUp,
+        signOut,
+        sendResetEmail,
+        resetPass,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
