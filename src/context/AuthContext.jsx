@@ -4,6 +4,7 @@ import { supabase } from "../utils/supabaseClient";
 import { setItem, removeItem } from "../utils/storage";
 import toast from "react-hot-toast";
 
+const dev = import.meta.env.VITE_ENV_P;
 const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
