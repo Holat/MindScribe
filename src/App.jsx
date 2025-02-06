@@ -15,6 +15,7 @@ import Tags from "./pages/Tag/Tags";
 import { NoteProvider } from "./context/NoteContext";
 import EditNote from "./pages/Home/EditNote";
 import ResetP from "./pages/Auth/ResetP";
+import ListOfNames from "./components/ListOfNames";
 
 function App() {
   return (

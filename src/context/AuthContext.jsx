@@ -106,6 +106,7 @@ export function AuthProvider({ children }) {
     try {
       await supabase.auth.signOut();
       removeItem("user"); // ✅ Remove from localStorage
+      localStorage.removeItem("hasSeenModal");
       setUser(null); // ✅ Clear context state
       toast.success("Signed Out");
       navigate("/");
